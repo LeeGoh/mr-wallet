@@ -8,6 +8,27 @@ Subscription fee recording service, Dear Mr.Wallet
 
 <br><br>
 
+## Service introduction
+
+
+<br>
+
+**Representative features**   
+1️⃣ <br>
+2️⃣ <br>
+
+<br>
+
+**API Document**   
+
+
+<br>
+
+**ERD**   
+https://www.erdcloud.com/d/8mb5ePwJZyMo3cA4N
+
+<br><br>
+
 ## Commit/PR/Branch Convention
 <table>
   <tbody>
@@ -26,15 +47,6 @@ Subscription fee recording service, Dear Mr.Wallet
  ex) feat: Project basic settings
 ```
 
-<br><br>
-## Service introduction
-
-
-<br><br>
-### Representative features
-
-1️⃣ <br>
-2️⃣ <br>
 
 <br><br>
 
