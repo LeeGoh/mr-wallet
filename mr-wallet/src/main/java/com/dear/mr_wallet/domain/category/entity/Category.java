@@ -1,5 +1,6 @@
 package com.dear.mr_wallet.domain.category.entity;
 
+import com.dear.mr_wallet.domain.category.dto.PostCategoryDto;
 import com.dear.mr_wallet.domain.history.entity.History;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -40,5 +42,9 @@ public class Category {
             history.addCategory(this);
         }
         this.histories.add(history);
+    }
+
+    public void editCategoryName(PostCategoryDto patch) {
+        Optional.ofNullable(patch.getName()).ifPresent(name -> this.name = patch.getName());
     }
 }
