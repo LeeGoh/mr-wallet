@@ -1,7 +1,10 @@
 package com.dear.mr_wallet.domain.member.entity;
 
+import com.dear.mr_wallet.domain.member.dto.PatchNicknameDto;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -17,26 +20,35 @@ public class Member {
     private Boolean allowEmail;
     private Integer totalAmount;
 
-    @Setter
-    private String roles;
+    @Enumerated(value = EnumType.STRING)
+    private MemberStatus memberStatus;
 
     @Builder
     public Member(Long id, String nickname, String email, String password,
-                  Boolean allowEmail, Integer totalAmount, String roles) {
+                  Boolean allowEmail, Integer totalAmount, MemberStatus memberStatus) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;
         this.password = password; // 추후 수정
         this.allowEmail = allowEmail;
         this.totalAmount = totalAmount;
-        this.roles = roles;
+        this.memberStatus = memberStatus;
     }
 
     public void editNewPassword(String password) {
         this.password = password;
     }
 
+    public void editNickname(PatchNicknameDto patch) {
+        Optional.ofNullable(patch.getNickname())
+                .ifPresent(nickname -> this.nickname = patch.getNickname());
+    }
+
     public void setTotalAmount(Integer totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public void setMemberStatus(MemberStatus memberStatus) {
+        this.memberStatus = memberStatus;
     }
 }
