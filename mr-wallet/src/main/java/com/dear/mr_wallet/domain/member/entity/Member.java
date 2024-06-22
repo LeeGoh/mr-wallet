@@ -15,21 +15,28 @@ public class Member {
     private String email;
     private String password;
     private Boolean allowEmail;
+    private Integer totalAmount;
 
     @Setter
     private String roles;
 
     @Builder
-    public Member(Long id, String nickname, String email, String password, Boolean allowEmail, String roles) {
+    public Member(Long id, String nickname, String email, String password,
+                  Boolean allowEmail, Integer totalAmount, String roles) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;
         this.password = password; // 추후 수정
         this.allowEmail = allowEmail;
+        this.totalAmount = totalAmount;
         this.roles = roles;
     }
 
     public void editNewPassword(String password) {
         this.password = password;
+    }
+
+    public void setTotalAmount(Integer totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }
