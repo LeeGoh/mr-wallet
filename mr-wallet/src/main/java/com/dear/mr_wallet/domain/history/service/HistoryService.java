@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.dear.mr_wallet.domain.history.entity.HistoryStatus.COMPLETE_PAYMENT;
-import static com.dear.mr_wallet.domain.history.entity.HistoryStatus.WAITING_FOR_PAYMENT;
 import static com.dear.mr_wallet.global.exception.ExceptionCode.CATEGORY_NOT_FOUND;
 
 @Service
@@ -35,7 +33,6 @@ public class HistoryService {
                 .flexibleAmount(post.getFlexibleAmount())
                 .paymentMethod(post.getPaymentMethod())
                 .memo(post.getMemo())
-                .historyStatus(WAITING_FOR_PAYMENT)
                 .paymentStatus(false)
                 .memberId(1L) // 사용자 식별자 저장 로직 변경 예정
                 .build();
@@ -89,12 +86,10 @@ public class HistoryService {
 
         if (findHistory.getPaymentStatus().equals(false)) {
             findHistory.setPaymentStatus(true);
-            findHistory.setHistoryStatus(COMPLETE_PAYMENT);
             findCategory.reduceTotalAmount(findHistory.getAmount());
             findMember.reduceTotalAmount(findHistory.getAmount());
         } else {
             findHistory.setPaymentStatus(false);
-            findHistory.setHistoryStatus(WAITING_FOR_PAYMENT);
             findCategory.increaseTotalAmount(findHistory.getAmount());
             findMember.increaseTotalAmount(findHistory.getAmount());
         }
@@ -103,7 +98,13 @@ public class HistoryService {
     }
 
     public void removeHistory(Long historyId) {
-        History history = historyDbService.ifExistsReturnHistory(historyId);
-        historyDbService.removeHistory(history);
+        History findHistory = historyDbService.ifExistsReturnHistory(historyId);
+        Category findCategory = categoryDbService.ifExistsReturnCategory(findHistory.getCategory().getId());
+        Member findMember = memberDbService.ifExistsReturnMember(findHistory.getMemberId());
+
+        findCategory.reduceTotalAmount(findHistory.getAmount());
+        findMember.reduceTotalAmount(findHistory.getAmount());
+
+        historyDbService.removeHistory(findHistory);
     }
 }

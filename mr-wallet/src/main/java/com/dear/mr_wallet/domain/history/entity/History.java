@@ -30,9 +30,6 @@ public class History {
     private String paymentMethod;
     private String memo;
 
-    @Enumerated(value = EnumType.STRING)
-    private HistoryStatus historyStatus;
-
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
@@ -41,7 +38,7 @@ public class History {
     @Builder
     public History(Long id, Long memberId, String title, Integer amount,
                    LocalDateTime paymentDate, LocalDateTime endDate, Boolean paymentStatus,
-                   Boolean flexibleAmount, String paymentMethod, String memo, HistoryStatus historyStatus) {
+                   Boolean flexibleAmount, String paymentMethod, String memo) {
         this.id = id;
         this.memberId = memberId;
         this.title = title;
@@ -52,7 +49,6 @@ public class History {
         this.flexibleAmount = flexibleAmount;
         this.paymentMethod = paymentMethod;
         this.memo = memo;
-        this.historyStatus = historyStatus;
     }
 
     public void addCategory(Category category) {
@@ -61,10 +57,6 @@ public class History {
 
     public void setPaymentStatus(Boolean paymentStatus) {
         this.paymentStatus = paymentStatus;
-    }
-
-    public void setHistoryStatus(HistoryStatus status) {
-        this.historyStatus = status;
     }
 
     public void setAmount(Integer amount) {
