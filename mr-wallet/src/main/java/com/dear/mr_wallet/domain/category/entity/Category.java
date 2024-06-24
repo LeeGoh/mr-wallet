@@ -47,4 +47,12 @@ public class Category {
     public void editCategoryName(PostCategoryDto patch) {
         Optional.ofNullable(patch.getName()).ifPresent(name -> this.name = patch.getName());
     }
+
+    public void increaseTotalAmount(Integer amount) {
+        this.totalAmount += amount;
+    }
+
+    public void reduceTotalAmount(Integer amount) {
+        this.totalAmount -= amount;
+    }
 }

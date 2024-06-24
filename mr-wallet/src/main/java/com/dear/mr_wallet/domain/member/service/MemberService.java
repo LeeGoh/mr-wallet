@@ -37,7 +37,7 @@ public class MemberService {
                 .totalAmount(0)
                 .build();
 
-//        categoryDbService.saveCategory(category);
+        categoryDbService.saveCategory(category);
     }
 
     @Transactional
