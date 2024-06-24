@@ -51,4 +51,12 @@ public class Member {
     public void setMemberStatus(MemberStatus memberStatus) {
         this.memberStatus = memberStatus;
     }
+
+    public void increaseTotalAmount(Integer amount) {
+        this.totalAmount += amount;
+    }
+
+    public void reduceTotalAmount(Integer amount) {
+        this.totalAmount -= amount;
+    }
 }

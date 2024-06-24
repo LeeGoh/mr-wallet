@@ -63,11 +63,17 @@ public class History {
         this.paymentStatus = paymentStatus;
     }
 
+    public void setHistoryStatus(HistoryStatus status) {
+        this.historyStatus = status;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
     public void editHistory(PostHistoryDto post) {
         Optional.ofNullable(post.getTitle())
                 .ifPresent(title -> this.title = post.getTitle());
-        Optional.ofNullable(post.getAmount())
-                .ifPresent(amount -> this.amount = post.getAmount());
         Optional.ofNullable(post.getPaymentDate())
                 .ifPresent(paymentDate -> this.paymentDate = post.getPaymentDate());
         Optional.ofNullable(post.getEndDate())
