@@ -44,10 +44,6 @@ public class Member {
                 .ifPresent(nickname -> this.nickname = patch.getNickname());
     }
 
-    public void setTotalAmount(Integer totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
     public void setMemberStatus(MemberStatus memberStatus) {
         this.memberStatus = memberStatus;
     }
