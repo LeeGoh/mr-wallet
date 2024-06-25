@@ -23,6 +23,15 @@ public class MemberDbService {
     }
 
     public void removeMember(Member member) {
+        memberRepository.delete(member);
+    }
+
+    public boolean checkExistEmail(String email) {
+        return memberRepository.existsByEmail(email);
+    }
+
+    public boolean checkExistNickname(String nickname) {
+        return memberRepository.existsByNickname(nickname);
     }
 
     public Long findBasicCategoryId(Long memberId) {
