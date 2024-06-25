@@ -1,5 +1,6 @@
 package com.dear.mr_wallet.domain.member.service;
 
+import com.dear.mr_wallet.domain.member.dto.GetMemberDto;
 import com.dear.mr_wallet.domain.member.entity.Member;
 import com.dear.mr_wallet.domain.member.repository.MemberRepository;
 import com.dear.mr_wallet.global.exception.BusinessLogicException;
@@ -36,5 +37,9 @@ public class MemberDbService {
 
     public Long findBasicCategoryId(Long memberId) {
         return memberRepository.findBasicCategoryId(memberId);
+    }
+
+    public GetMemberDto getMemberInfo(Long memberId) {
+        return memberRepository.getMemberInfo(memberId);
     }
 }
