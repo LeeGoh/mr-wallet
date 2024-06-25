@@ -28,7 +28,15 @@ public class HistoryDbService {
         historyRepository.delete(history);
     }
 
-    public List<History> findAllHistoryByCategoryId(Long categoryId, Long memberId) {
+    private List<History> findAllHistoryByMemberId(Long memberId) {
+        return historyRepository.findAllHistoryByMemberId(memberId);
+    }
+
+    public void removeAllHistory(Long memberId) {
+        findAllHistoryByMemberId(memberId).forEach(h -> removeHistory(h));
+    }
+
+    private List<History> findAllHistoryByCategoryId(Long categoryId, Long memberId) {
         return historyRepository.findAllHistoryByCategoryId(categoryId, memberId);
     }
 

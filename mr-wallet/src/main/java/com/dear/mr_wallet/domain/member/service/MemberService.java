@@ -55,9 +55,10 @@ public class MemberService {
         Member findMember = memberDbService.ifExistsReturnMember(memberId);
         findMember.setMemberStatus(MemberStatus.MEMBER_EXITED);
 
-        // 카테고리 삭제 로직 구현
-        // 기록 삭제 로직 구현
+        categoryDbService.removeAllCategory(memberId);
+        historyDbService.removeAllHistory(memberId);
 
+        findMember.reduceTotalAmount(findMember.getTotalAmount());
         memberDbService.saveMember(findMember);
     }
 }
