@@ -29,15 +29,18 @@ public class MemberService {
                 .memberStatus(MemberStatus.MEMBER_ACTIVE)
                 .build();
 
-        Member newMember = memberDbService.saveAndReturnMember(member);
+        memberDbService.saveMember(member);
 
         Category category = Category.builder()
-                .memberId(newMember.getId())
+                .memberId(member.getId())
                 .name("기본")
                 .totalAmount(0)
                 .build();
 
         categoryDbService.saveCategory(category);
+
+        member.setBasicCategoryId(category.getId());
+        memberDbService.saveMember(member);
     }
 
     @Transactional

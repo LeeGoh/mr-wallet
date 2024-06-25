@@ -19,13 +19,14 @@ public class Member {
     private String password;
     private Boolean allowEmail;
     private Integer totalAmount;
+    private Long basicCategoryId;
 
     @Enumerated(value = EnumType.STRING)
     private MemberStatus memberStatus;
 
     @Builder
-    public Member(Long id, String nickname, String email, String password,
-                  Boolean allowEmail, Integer totalAmount, MemberStatus memberStatus) {
+    public Member(Long id, String nickname, String email, String password, Boolean allowEmail,
+                  Integer totalAmount, MemberStatus memberStatus, Long basicCategoryId) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;
@@ -33,6 +34,7 @@ public class Member {
         this.allowEmail = allowEmail;
         this.totalAmount = totalAmount;
         this.memberStatus = memberStatus;
+        this.basicCategoryId = basicCategoryId;
     }
 
     public void editNewPassword(String password) {
@@ -42,6 +44,10 @@ public class Member {
     public void editNickname(PatchNicknameDto patch) {
         Optional.ofNullable(patch.getNickname())
                 .ifPresent(nickname -> this.nickname = patch.getNickname());
+    }
+
+    public void setBasicCategoryId(Long basicCategoryId) {
+        this.basicCategoryId = basicCategoryId;
     }
 
     public void setMemberStatus(MemberStatus memberStatus) {

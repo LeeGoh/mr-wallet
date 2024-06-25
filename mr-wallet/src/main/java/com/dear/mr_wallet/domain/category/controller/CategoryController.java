@@ -35,4 +35,10 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("category/{category-id}/all")
+    public ResponseEntity deleteCategoryAndHistory(@PathVariable("category-id") Long categoryId) {
+        categoryService.deleteCategoryAndHistory(categoryId);
+        return ResponseEntity.noContent().build();
+    }
 }
