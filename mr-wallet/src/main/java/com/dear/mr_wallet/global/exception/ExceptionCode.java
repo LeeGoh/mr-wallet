@@ -7,6 +7,8 @@ public enum ExceptionCode {
     MEMBER_NOT_FOUND(415, "존재하지 않는 회원입니다."),
     CATEGORY_NOT_FOUND(415, "존재하지 않는 카테고리입니다."),
 
+    DELETE_IMPOSSIBLE_BASIC_CATEGORY(415, "기본 카테고리는 삭제할 수 없습니다."),
+
     UNAUTHORIZED_FOR_UPDATE(403, "수정 권한이 없습니다."),
     UNAUTHORIZED_FOR_DELETE(403, "삭제 권한이 없습니다."),
     INVALID_ACCESS(403, "유효하지 않은 접근입니다."),

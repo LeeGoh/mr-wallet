@@ -3,21 +3,28 @@ package com.dear.mr_wallet.domain.category.service;
 import com.dear.mr_wallet.domain.category.dto.PostCategoryDto;
 import com.dear.mr_wallet.domain.category.entity.Category;
 import com.dear.mr_wallet.domain.history.service.HistoryDbService;
+import com.dear.mr_wallet.domain.member.entity.Member;
+import com.dear.mr_wallet.domain.member.service.MemberDbService;
+import com.dear.mr_wallet.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.dear.mr_wallet.global.exception.ExceptionCode.DELETE_IMPOSSIBLE_BASIC_CATEGORY;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryDbService categoryDbService;
     private final HistoryDbService historyDbService;
+    private final MemberDbService memberDbService;
 
     @Transactional
     public void createCategory(PostCategoryDto post) {
         Category category = Category.builder()
                 .name(post.getName())
                 .totalAmount(0)
+                .memberId(1L) // 추후 수정
                 .build();
 
         categoryDbService.saveCategory(category);
@@ -33,9 +40,30 @@ public class CategoryService {
 
     public void deleteCategory(Long categoryId) {
         Category findCategory = categoryDbService.ifExistsReturnCategory(categoryId);
+        Long basicCategoryId = memberDbService.findBasicCategoryId(findCategory.getMemberId());
 
-        // 카테고리에 담겨있던 기록들의 카테고리를 기본으로 변경
+        if (categoryId.equals(basicCategoryId)) {
+            throw new BusinessLogicException(DELETE_IMPOSSIBLE_BASIC_CATEGORY);
+        }
 
+        Category findBasicCategory = categoryDbService.ifExistsReturnCategory(basicCategoryId);
+
+        historyDbService.changeCategory(categoryId, findCategory.getMemberId(), findBasicCategory);
+        findBasicCategory.increaseTotalAmount(findCategory.getTotalAmount());
+
+        categoryDbService.removeCategory(findCategory);
+    }
+
+    public void deleteCategoryAndHistory(Long categoryId) {
+        Category findCategory = categoryDbService.ifExistsReturnCategory(categoryId);
+        Member findMember = memberDbService.ifExistsReturnMember(findCategory.getMemberId());
+
+        if (categoryId.equals(findMember.getBasicCategoryId())) {
+            throw new BusinessLogicException(DELETE_IMPOSSIBLE_BASIC_CATEGORY);
+        }
+
+        findMember.reduceTotalAmount(findCategory.getTotalAmount());
+        historyDbService.removeAllHistory(categoryId, findCategory.getMemberId());
         categoryDbService.removeCategory(findCategory);
     }
 }

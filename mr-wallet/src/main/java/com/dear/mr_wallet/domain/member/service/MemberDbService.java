@@ -22,10 +22,10 @@ public class MemberDbService {
         memberRepository.save(member);
     }
 
-    public Member saveAndReturnMember(Member member) {
-        return memberRepository.save(member);
+    public void removeMember(Member member) {
     }
 
-    public void removeMember(Member member) {
+    public Long findBasicCategoryId(Long memberId) {
+        return memberRepository.findBasicCategoryId(memberId);
     }
 }
