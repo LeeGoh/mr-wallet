@@ -3,14 +3,12 @@ package com.dear.mr_wallet.domain.member.service;
 import com.dear.mr_wallet.domain.category.entity.Category;
 import com.dear.mr_wallet.domain.category.service.CategoryDbService;
 import com.dear.mr_wallet.domain.history.service.HistoryDbService;
+import com.dear.mr_wallet.domain.member.dto.GetMemberDto;
 import com.dear.mr_wallet.domain.member.dto.PatchNicknameDto;
-import com.dear.mr_wallet.domain.member.dto.PostEmailDto;
 import com.dear.mr_wallet.domain.member.dto.PostMemberDto;
-import com.dear.mr_wallet.domain.member.dto.PostNicknameDto;
 import com.dear.mr_wallet.domain.member.entity.Member;
 import com.dear.mr_wallet.domain.member.entity.MemberStatus;
 import com.dear.mr_wallet.global.exception.BusinessLogicException;
-import com.dear.mr_wallet.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +73,10 @@ public class MemberService {
         findMember.editNickname(patch);
 
         memberDbService.saveMember(findMember);
+    }
+
+    public GetMemberDto getMemberInfo(Long memberId) {
+        return memberDbService.getMemberInfo(memberId);
     }
 
     public void deleteMember(Long memberId) {
