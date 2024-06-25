@@ -6,6 +6,7 @@ import com.dear.mr_wallet.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.dear.mr_wallet.global.exception.ExceptionCode.CATEGORY_NOT_FOUND;
@@ -34,5 +35,13 @@ public class CategoryDbService {
 
     public Optional<String> findCategoryName(String name, Long memberId) {
         return categoryRepository.findCategoryName(name, memberId);
+    }
+
+    private List<Category> findAllCategoryByMemberId(Long memberId) {
+        return categoryRepository.findAllCategoryByMemberId(memberId);
+    }
+
+    public void removeAllCategory(Long memberId) {
+        findAllCategoryByMemberId(memberId).forEach(c -> removeCategory(c));
     }
 }

@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.dear.mr_wallet.domain.category.entity.QCategory.category;
@@ -34,5 +35,14 @@ public class CategoryRepositoryImpl implements CustomCategoryRepository{
                 .from(category)
                 .where(category.name.eq(name).and(category.memberId.eq(memberId)))
                 .fetchOne());
+    }
+
+    @Override
+    public List<Category> findAllCategoryByMemberId(Long memberId) {
+        return queryFactory
+                .select(category)
+                .from(category)
+                .where(category.memberId.eq(memberId))
+                .fetch();
     }
 }

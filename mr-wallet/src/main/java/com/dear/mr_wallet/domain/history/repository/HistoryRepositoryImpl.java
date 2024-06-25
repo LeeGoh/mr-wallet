@@ -18,6 +18,15 @@ public class HistoryRepositoryImpl implements CustomHistoryRepository{
     }
 
     @Override
+    public List<History> findAllHistoryByMemberId(Long memberId) {
+        return queryFactory
+                .select(history)
+                .from(history)
+                .where(history.memberId.eq(memberId))
+                .fetch();
+    }
+
+    @Override
     public List<History> findAllHistoryByCategoryId(Long categoryId, Long memberId) {
         return queryFactory
                 .select(history)
