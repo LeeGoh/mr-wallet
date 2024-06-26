@@ -1,5 +1,6 @@
 package com.dear.mr_wallet.domain.category.service;
 
+import com.dear.mr_wallet.domain.category.dto.GetCategoryDto;
 import com.dear.mr_wallet.domain.category.dto.PostCategoryDto;
 import com.dear.mr_wallet.domain.category.entity.Category;
 import com.dear.mr_wallet.domain.history.service.HistoryDbService;
@@ -7,6 +8,8 @@ import com.dear.mr_wallet.domain.member.entity.Member;
 import com.dear.mr_wallet.domain.member.service.MemberDbService;
 import com.dear.mr_wallet.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +39,19 @@ public class CategoryService {
         findCategory.editCategoryName(patch);
 
         categoryDbService.saveCategory(findCategory);
+    }
+
+    public Page<GetCategoryDto> getCategory(Long memberId, Pageable pageable) {
+        return categoryDbService.getCategory(memberId, pageable);
+    }
+
+    public GetCategoryDto getCategoryDto(Long categoryId) {
+        Category findCategory = categoryDbService.ifExistsReturnCategory(categoryId);
+        return GetCategoryDto.builder()
+                .categoryId(categoryId)
+                .categoryName(findCategory.getName())
+                .totalAmount(findCategory.getTotalAmount())
+                .build();
     }
 
     public void deleteCategory(Long categoryId) {

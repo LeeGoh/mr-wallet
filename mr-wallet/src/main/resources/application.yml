@@ -14,3 +14,7 @@ spring:
         default_batch_fetch_size: 100
         format_sql: true
     defer-datasource-initialization: true
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
