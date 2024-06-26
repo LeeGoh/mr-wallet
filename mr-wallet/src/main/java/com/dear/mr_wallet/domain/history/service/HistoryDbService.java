@@ -1,11 +1,14 @@
 package com.dear.mr_wallet.domain.history.service;
 
 import com.dear.mr_wallet.domain.category.entity.Category;
+import com.dear.mr_wallet.domain.history.dto.GetHistoryDto;
 import com.dear.mr_wallet.domain.history.entity.History;
 import com.dear.mr_wallet.domain.history.repository.HistoryRepository;
 import com.dear.mr_wallet.global.exception.BusinessLogicException;
 import com.dear.mr_wallet.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,5 +54,8 @@ public class HistoryDbService {
             h.addCategory(category);
             saveHistory(h);
         }
+    }
+    public Page<GetHistoryDto> getHistoryDtoByCategoryIdAndMemberId(Long categoryId, Long memberId, Pageable pageable) {
+        return historyRepository.getHistoryDtoByCategoryIdAndMemberId(categoryId, memberId, pageable);
     }
 }

@@ -1,9 +1,12 @@
 package com.dear.mr_wallet.domain.category.service;
 
+import com.dear.mr_wallet.domain.category.dto.GetCategoryDto;
 import com.dear.mr_wallet.domain.category.entity.Category;
 import com.dear.mr_wallet.domain.category.repository.CategoryRepository;
 import com.dear.mr_wallet.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +46,9 @@ public class CategoryDbService {
 
     public void removeAllCategory(Long memberId) {
         findAllCategoryByMemberId(memberId).forEach(c -> removeCategory(c));
+    }
+
+    public Page<GetCategoryDto> getCategory(Long memberId, Pageable pageable) {
+        return categoryRepository.getCategory(memberId, pageable);
     }
 }
