@@ -2,6 +2,7 @@ package com.dear.mr_wallet.domain.history.service;
 
 import com.dear.mr_wallet.domain.category.entity.Category;
 import com.dear.mr_wallet.domain.category.service.CategoryDbService;
+import com.dear.mr_wallet.domain.history.dto.GetHistoryDetailDto;
 import com.dear.mr_wallet.domain.history.dto.GetHistoryDto;
 import com.dear.mr_wallet.domain.history.dto.PostHistoryDto;
 import com.dear.mr_wallet.domain.history.entity.History;
@@ -100,8 +101,14 @@ public class HistoryService {
         historyDbService.saveHistory(findHistory);
     }
 
-    public Page<GetHistoryDto> getHistoryDto(Long categoryId, Long memberId, Pageable pageable) {
-        return historyDbService.getHistoryDtoByCategoryIdAndMemberId(categoryId, memberId, pageable);
+    public GetHistoryDetailDto getHistoryDetail(Long historyId) {
+        return historyDbService.getHistoryDetail(historyId);
+    }
+
+    public Page<GetHistoryDto> getHistoryDto(Long categoryId, Pageable pageable) {
+        Category findCategory = categoryDbService.ifExistsReturnCategory(categoryId);
+        return historyDbService
+                .getHistoryDtoByCategoryIdAndMemberId(categoryId, findCategory.getMemberId(), pageable);
     }
 
     public void removeHistory(Long historyId) {

@@ -40,15 +40,6 @@ public class CategoryController {
         return ResponseEntity.ok().body(new MultiResponseDto<>(categories));
     }
 
-    @GetMapping("/category/{category-id}/{member-id}")
-    public ResponseEntity getCategoryDetail(@PathVariable("category-id") Long categoryId,
-                                            @PathVariable("member-id") Long memberId,
-                                            Pageable pageable) {
-        GetCategoryDto category = categoryService.getCategoryDto(categoryId);
-        Page<GetHistoryDto> histories = historyService.getHistoryDto(categoryId, memberId, pageable);
-        return ResponseEntity.ok().body(new WrapCategoryDto<>(category, histories));
-    }
-
     @DeleteMapping("category/{category-id}")
     public ResponseEntity deleteCategory(@PathVariable("category-id") Long categoryId) {
         categoryService.deleteCategory(categoryId);

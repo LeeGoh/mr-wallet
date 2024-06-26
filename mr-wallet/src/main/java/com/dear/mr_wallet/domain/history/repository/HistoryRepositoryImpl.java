@@ -1,6 +1,8 @@
 package com.dear.mr_wallet.domain.history.repository;
 
+import com.dear.mr_wallet.domain.history.dto.GetHistoryDetailDto;
 import com.dear.mr_wallet.domain.history.dto.GetHistoryDto;
+import com.dear.mr_wallet.domain.history.dto.QGetHistoryDetailDto;
 import com.dear.mr_wallet.domain.history.dto.QGetHistoryDto;
 import com.dear.mr_wallet.domain.history.entity.History;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -63,5 +65,23 @@ public class HistoryRepositoryImpl implements CustomHistoryRepository{
 
         long total = result.size();
         return new PageImpl<>(result, pageable, total);
+    }
+
+    @Override
+    public GetHistoryDetailDto getHistoryDetail(Long historyId) {
+        return queryFactory
+                .select(new QGetHistoryDetailDto(
+                        history.id,
+                        history.title,
+                        history.amount,
+                        history.paymentDate,
+                        history.endDate,
+                        history.paymentStatus,
+                        history.flexibleAmount,
+                        history.paymentMethod,
+                        history.memo
+                )).from(history)
+                .where(history.id.eq(historyId))
+                .fetchOne();
     }
 }
