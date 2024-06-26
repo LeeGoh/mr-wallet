@@ -1,6 +1,7 @@
 package com.dear.mr_wallet.domain.history.service;
 
 import com.dear.mr_wallet.domain.category.entity.Category;
+import com.dear.mr_wallet.domain.history.dto.GetHistoryDetailDto;
 import com.dear.mr_wallet.domain.history.dto.GetHistoryDto;
 import com.dear.mr_wallet.domain.history.entity.History;
 import com.dear.mr_wallet.domain.history.repository.HistoryRepository;
@@ -57,5 +58,9 @@ public class HistoryDbService {
     }
     public Page<GetHistoryDto> getHistoryDtoByCategoryIdAndMemberId(Long categoryId, Long memberId, Pageable pageable) {
         return historyRepository.getHistoryDtoByCategoryIdAndMemberId(categoryId, memberId, pageable);
+    }
+
+    public GetHistoryDetailDto getHistoryDetail(Long historyId) {
+        return historyRepository.getHistoryDetail(historyId);
     }
 }
