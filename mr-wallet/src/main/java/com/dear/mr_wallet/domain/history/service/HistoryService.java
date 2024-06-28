@@ -15,7 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
+import static com.dear.mr_wallet.domain.history.entity.HistoryStatus.DURING_REGULAR_PAYMENT;
 import static com.dear.mr_wallet.global.exception.ExceptionCode.CATEGORY_NOT_FOUND;
+import static com.dear.mr_wallet.global.exception.ExceptionCode.PAYMENT_CAN_NOT_BE_LATE_THAN_END;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,9 @@ public class HistoryService {
     public void createHistory(PostHistoryDto post) {
         categoryDbService.findCategoryName(post.getCategoryName(), 1L)
                 .orElseThrow(() -> new BusinessLogicException(CATEGORY_NOT_FOUND));
+        if (post.getPaymentDate().isAfter(post.getEndDate())) {
+            throw new BusinessLogicException(PAYMENT_CAN_NOT_BE_LATE_THAN_END);
+        }
 
         History history = History.builder()
                 .title(post.getTitle())
@@ -35,6 +42,7 @@ public class HistoryService {
                 .paymentDate(post.getPaymentDate())
                 .endDate(post.getEndDate())
                 .flexibleAmount(post.getFlexibleAmount())
+                .repeatCycle(post.getRepeatCycle())
                 .paymentMethod(post.getPaymentMethod())
                 .memo(post.getMemo())
                 .paymentStatus(false)
@@ -44,6 +52,8 @@ public class HistoryService {
         Category findCategory = categoryDbService.findCategoryByName(post.getCategoryName(), 1L);
         Member findMember = memberDbService.ifExistsReturnMember(1L);
 
+        history.setNextPaymentDate(nextPaymentDate(post.getPaymentDate(), post.getRepeatCycle(), post.getEndDate()));
+        history.setHistoryStatus(DURING_REGULAR_PAYMENT);
         history.addCategory(findCategory);
         findMember.increaseTotalAmount(post.getAmount());
         findCategory.increaseTotalAmount(post.getAmount());
@@ -58,6 +68,11 @@ public class HistoryService {
 
         History findHistory = historyDbService.ifExistsReturnHistory(historyId);
         findHistory.editHistory(post);
+
+        if (post.getPaymentDate() != null) {
+            findHistory.setNextPaymentDate(
+                    nextPaymentDate(post.getPaymentDate(), findHistory.getRepeatCycle(), findHistory.getEndDate()));
+        }
 
         if (post.getCategoryName() != findHistory.getCategory().getName()) {
             Category newCategory =
@@ -120,5 +135,24 @@ public class HistoryService {
         findMember.reduceTotalAmount(findHistory.getAmount());
 
         historyDbService.removeHistory(findHistory);
+    }
+
+    public LocalDateTime nextPaymentDate(LocalDateTime paymentDate, String repeatCycle, LocalDateTime endDate) {
+        LocalDateTime nextPaymentDate = paymentDate;
+
+        switch (repeatCycle) {
+            case "매주":
+                nextPaymentDate = nextPaymentDate.plusWeeks(1);
+                break;
+            case "매달":
+                nextPaymentDate = nextPaymentDate.plusMonths(1);
+                break;
+            case "매년":
+                nextPaymentDate = nextPaymentDate.plusYears(1);
+                break;
+        }
+
+        if (nextPaymentDate.isBefore(endDate) || nextPaymentDate.isEqual(endDate)) return nextPaymentDate;
+        else return paymentDate;
     }
 }

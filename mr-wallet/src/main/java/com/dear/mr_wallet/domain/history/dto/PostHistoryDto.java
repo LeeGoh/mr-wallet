@@ -14,18 +14,21 @@ public class PostHistoryDto {
     private LocalDateTime paymentDate;
     private LocalDateTime endDate;
     private Boolean flexibleAmount;
+    private String repeatCycle;
     private String paymentMethod;
     private String memo;
     private String categoryName;
 
     @Builder
-    public PostHistoryDto(String title, Integer amount, LocalDateTime paymentDate, LocalDateTime endDate,
-                          Boolean flexibleAmount, String paymentMethod, String memo, String categoryName) {
+    public PostHistoryDto(String title, Integer amount, LocalDateTime paymentDate,
+                          LocalDateTime endDate, Boolean flexibleAmount, String repeatCycle,
+                          String paymentMethod, String memo, String categoryName) {
         this.title = title;
         this.amount = amount;
         this.paymentDate = paymentDate;
         this.endDate = endDate;
         this.flexibleAmount = flexibleAmount;
+        this.repeatCycle = repeatCycle;
         this.paymentMethod = paymentMethod;
         this.memo = memo;
         this.categoryName = categoryName;

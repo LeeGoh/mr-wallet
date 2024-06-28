@@ -54,8 +54,10 @@ public class HistoryRepositoryImpl implements CustomHistoryRepository{
                         history.paymentDate,
                         history.paymentStatus,
                         history.flexibleAmount,
+                        history.repeatCycle,
                         history.paymentMethod,
-                        history.memo
+                        history.memo,
+                        history.historyStatus
                 )).from(history)
                 .where(history.category.id.eq(categoryId)
                         .and(history.memberId.eq(memberId)))
@@ -76,10 +78,13 @@ public class HistoryRepositoryImpl implements CustomHistoryRepository{
                         history.amount,
                         history.paymentDate,
                         history.endDate,
+                        history.nextPaymentDate,
                         history.paymentStatus,
                         history.flexibleAmount,
+                        history.repeatCycle,
                         history.paymentMethod,
-                        history.memo
+                        history.memo,
+                        history.historyStatus
                 )).from(history)
                 .where(history.id.eq(historyId))
                 .fetchOne();

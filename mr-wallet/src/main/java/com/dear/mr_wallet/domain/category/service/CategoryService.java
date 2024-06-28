@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.dear.mr_wallet.global.exception.ExceptionCode.CATEGORY_ALREADY_EXIST;
 import static com.dear.mr_wallet.global.exception.ExceptionCode.DELETE_IMPOSSIBLE_BASIC_CATEGORY;
 
 @Service
@@ -24,6 +25,10 @@ public class CategoryService {
 
     @Transactional
     public void createCategory(PostCategoryDto post) {
+        if (categoryDbService.ifExistsByCategoryName(post.getName())) {
+            throw new BusinessLogicException(CATEGORY_ALREADY_EXIST);
+        }
+
         Category category = Category.builder()
                 .name(post.getName())
                 .totalAmount(0)
@@ -35,6 +40,10 @@ public class CategoryService {
 
     @Transactional
     public void editCategory(PostCategoryDto patch, Long categoryId) {
+        if (categoryDbService.ifExistsByCategoryName(patch.getName())) {
+            throw new BusinessLogicException(CATEGORY_ALREADY_EXIST);
+        }
+
         Category findCategory = categoryDbService.ifExistsReturnCategory(categoryId);
         findCategory.editCategoryName(patch);
 

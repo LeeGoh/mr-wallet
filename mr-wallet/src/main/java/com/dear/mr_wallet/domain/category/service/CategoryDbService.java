@@ -24,6 +24,10 @@ public class CategoryDbService {
                 .orElseThrow(() -> new BusinessLogicException(CATEGORY_NOT_FOUND));
     }
 
+    public boolean ifExistsByCategoryName(String name) {
+        return categoryRepository.existsByName(name);
+    }
+
     public void saveCategory(Category category) {
         categoryRepository.save(category);
     }

@@ -6,8 +6,10 @@ public enum ExceptionCode {
     HISTORY_NOT_FOUND(415, "존재하지 않는 기록입니다."),
     MEMBER_NOT_FOUND(415, "존재하지 않는 회원입니다."),
     CATEGORY_NOT_FOUND(415, "존재하지 않는 카테고리입니다."),
+    STATUS_NOT_FOUND(415, "존재하지 않는 결제 상태입니다."),
 
     DELETE_IMPOSSIBLE_BASIC_CATEGORY(415, "기본 카테고리는 삭제할 수 없습니다."),
+    PAYMENT_CAN_NOT_BE_LATE_THAN_END(415, "결제일은 마감일보다 늦을 수 없습니다."),
 
     UNAUTHORIZED_FOR_UPDATE(403, "수정 권한이 없습니다."),
     UNAUTHORIZED_FOR_DELETE(403, "삭제 권한이 없습니다."),
@@ -15,6 +17,7 @@ public enum ExceptionCode {
 
     EMAIL_ALREADY_EXIST(504, "이미 존재하는 이메일입니다."),
     NICKNAME_ALREADY_EXIST(504, "이미 존재하는 닉네임입니다."),
+    CATEGORY_ALREADY_EXIST(504, "이미 존재하는 카테고리명입니다."),
 
     INVALID_EMAIL_CODE(403, "유효하지 않은 인증 코드입니다."),
     ALREADY_EXPIRED_EMAIL_CODE(403, "인증 코드가 만료되었습니다."),
